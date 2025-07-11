@@ -2,28 +2,33 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
-URL = "https://shop.amul.com/en/product/amul-high-protein-plain-lassi-200-ml-or-pack-of-30"
-
-HEADERS = {
-    "User-Agent": "Mozilla/5.0"
+PRODUCTS = {
+    "Plain Lassi": "https://shop.amul.com/en/product/amul-high-protein-plain-lassi-200-ml-or-pack-of-30",
+    "Rose Lassi": "https://shop.amul.com/en/product/amul-high-protein-rose-lassi-200-ml-or-pack-of-30"
 }
 
-def check_stock():
-    response = requests.get(URL, headers=HEADERS)
+HEADERS = {"User-Agent": "Mozilla/5.0"}
+
+def check_stock(url):
+    response = requests.get(url, headers=HEADERS)
     soup = BeautifulSoup(response.text, "html.parser")
 
     button = soup.find("button", class_="btn btn-primary btn-block")
 
-    if button:
-        text = button.text.strip()
-        if "Add to Cart" in text:
-            print("Product is in stock")
-        else:
-            print("Out of stock")
-    else:
-        print("Could not find stock button")
+    if button and "Add to Cart" in button.text:
+        return True
+
+    return False
+
 
 while True:
-    check_stock()
-    print("Waiting before next check...")
+    for name, url in PRODUCTS.items():
+        available = check_stock(url)
+
+        if available:
+            print(f"{name} is available")
+        else:
+            print(f"{name} is out of stock")
+
+    print("Sleeping...")
     time.sleep(60)
