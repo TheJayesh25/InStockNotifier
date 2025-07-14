@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import os
 
-TELEGRAM_BOT_TOKEN = "TOKEN"
-TELEGRAM_CHAT_ID = "CHAT_ID"
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 PRODUCTS = {
     "Plain Lassi": "https://shop.amul.com/en/product/amul-high-protein-plain-lassi-200-ml-or-pack-of-30",
