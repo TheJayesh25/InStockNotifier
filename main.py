@@ -13,15 +13,16 @@ PRODUCTS = {
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-def check_stock(url):
-    response = requests.get(url, headers=HEADERS)
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    button = soup.find("button", class_="btn btn-primary btn-block")
-
-    if button and "Add to Cart" in button.text:
-        return True
-    return False
+# === Stock Check Function ===
+def is_in_stock(url):
+    try:
+        response = requests.get(url, headers=HEADERS)
+        soup = BeautifulSoup(response.text, "html.parser")
+        button = soup.find("button", class_="btn btn-primary btn-block")
+        return button and "Add to Cart" in button.text
+    except Exception as e:
+        print(f"Error checking {url}: {e}")
+        return False
 
 
 def send_telegram_alert(product, url):
