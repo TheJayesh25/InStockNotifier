@@ -37,11 +37,20 @@ def send_telegram_alert(product, url):
     requests.post(api, data=data)
 
 
+notified_products = set()
+
 while True:
+
     for name, url in PRODUCTS.items():
 
         if check_stock(url):
-            print("Sending alert")
-            send_telegram_alert(name, url)
+
+            if name not in notified_products:
+                send_telegram_alert(name, url)
+                notified_products.add(name)
+
+        else:
+            if name in notified_products:
+                notified_products.remove(name)
 
     time.sleep(60)
