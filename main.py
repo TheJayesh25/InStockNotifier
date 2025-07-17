@@ -46,7 +46,15 @@ def send_telegram_alert(product_name, url):
         print("❌ Failed to send alert")
 
 
-notified_products = set()
+# === Main Loop ===
+print("🔁 Starting stock monitor...")
+from datetime import datetime, timedelta
+
+notified_products = {}
+
+# Constants
+FOLLOW_UP_INTERVAL = 300  # 5 minutes in seconds
+MAX_DURATION = 1800       # 30 minutes in seconds
 
 while True:
 
