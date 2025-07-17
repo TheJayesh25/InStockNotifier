@@ -25,17 +25,25 @@ def is_in_stock(url):
         return False
 
 
-def send_telegram_alert(product, url):
-    message = f"{product} is back in stock!\n{url}"
-
-    api = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-
+# === Telegram Alert Function ===
+def send_telegram_alert(product_name, url):
+    message = f"🛒 *{product_name}* is *BACK IN STOCK*!\n[Click here to buy]({url})"
+    api_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     data = {
         "chat_id": TELEGRAM_CHAT_ID,
-        "text": message
+        "text": message,
+        "parse_mode": "Markdown"
     }
+    response = requests.post(api_url, data=data)
 
-    requests.post(api, data=data)
+    # DEBUG: Print response
+    print("Status Code:", response.status_code)
+    print("Response:", response.text)
+
+    if response.status_code == 200:
+        print(f"✅ Telegram alert sent for {product_name}")
+    else:
+        print("❌ Failed to send alert")
 
 
 notified_products = set()
