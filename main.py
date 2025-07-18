@@ -57,17 +57,35 @@ FOLLOW_UP_INTERVAL = 300  # 5 minutes in seconds
 MAX_DURATION = 1800       # 30 minutes in seconds
 
 while True:
-
     for name, url in PRODUCTS.items():
-
-        if check_stock(url):
-
+        if is_in_stock(url):
+            now = datetime.now()
             if name not in notified_products:
+                # First time it's in stock
                 send_telegram_alert(name, url)
-                notified_products.add(name)
-
+                notified_products[name] = {
+                    "first_alert": now,
+                    "last_alert": now,
+                    "alert_count": 1
+                }
+            else:
+                # Already notified, check follow-up conditions
+                info = notified_products[name]
+                time_since_first = (now - info["first_alert"]).total_seconds()
+                time_since_last = (now - info["last_alert"]).total_seconds()
+                
+                if (
+                    time_since_first < MAX_DURATION and
+                    time_since_last >= FOLLOW_UP_INTERVAL
+                ):
+                    send_telegram_alert(name, url)
+                    notified_products[name]["last_alert"] = now
+                    notified_products[name]["alert_count"] += 1
         else:
+            # Product went out of stock, reset tracking
             if name in notified_products:
-                notified_products.remove(name)
-
+                print(f"🔁 Resetting alert history for {name} (now out of stock)")
+                del notified_products[name]
+    
+    print("⏳ Sleeping 60 seconds...\n")
     time.sleep(60)
