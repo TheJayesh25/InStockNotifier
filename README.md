@@ -6,7 +6,7 @@ This project is a lightweight, customizable Python bot that monitors product ava
 
 Originally built to track the high-demand **Amul High Protein Lassi**, this solution is designed to solve a broader, real-world problem: missing out on products that sell out quickly.
 
-Whether you're trying to buy limited-release sneakers, graphics cards, concert tickets, or grocery items — this tool ensures you're notified **faster than email** or broken "Notify Me" systems.
+Whether you're trying to buy limited-release sneakers, graphics cards, concert tickets, or grocery items this tool ensures you're notified **faster than email** or broken "Notify Me" systems.
 
 ---
 
@@ -22,7 +22,7 @@ Whether you're trying to buy limited-release sneakers, graphics cards, concert t
 
 ## 🔧 Use Cases
 
-This script isn't limited to Amul or dairy products — it can be used for:
+This script isn't limited to Amul or dairy products it can be used for:
 
 - 🔔 Notifying when concert tickets go live
 - 💻 Tracking graphics card restocks
